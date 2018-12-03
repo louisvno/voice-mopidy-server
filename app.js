@@ -4,6 +4,7 @@ const sqlite = require('sqlite')
 const cors = require ('cors')
 const app = express()
 app.use(cors())
+app.use(express.json())
 app.get('/', (req, res) => res.send('Hello World!'))
 
 const port = process.env.PORT || 3000;
@@ -24,11 +25,11 @@ app.get('/track-list', async (req, res, next) => {
 app.post('/add-track', async (req, res, next) => {
   res.setHeader('Content-Type', 'application/json');
 try {
+  console.log(req);
   const db = await dbPromise;
-  const [post] = await Promise.all([
-    db.run('INSERT INTO tracks(youtubeId) VALUES(?)', req.body.id),
-  ]);
-  res.send(JSON.stringify({'post': post}));
+  await db.run('INSERT INTO tracks(id,youtubeId) VALUES(?,?)',4, req.body.youtubeId);
+  const tracks = await db.all('SELECT * FROM tracks');
+  res.send(JSON.stringify(tracks));
 } catch (err) {
   next(err);
 }
