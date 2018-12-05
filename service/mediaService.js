@@ -15,3 +15,10 @@ exports.addMedia = async (resourceId)=>{
     const mediaList = await this.getMediaList();
     return mediaList;
 }
+
+exports.deleteMedia = async(id)=>{
+    const db = await dbPromise;
+    await db.run('delete from media where id = ?', id);
+    const mediaList = await this.getMediaList();
+    return mediaList;
+}

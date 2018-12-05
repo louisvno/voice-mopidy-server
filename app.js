@@ -29,4 +29,14 @@ app.post('/media-add', async (req, res, next) => {
   }
 });
 
+app.delete('/media-delete', async (req, res, next) => {
+  res.setHeader('Content-Type', 'application/json');
+  try {
+    const mediaList= await mediaService.deleteMedia(req.query.id);
+    res.send(JSON.stringify(mediaList));
+  } catch (err) {
+    next(err);
+  }
+});
+
 app.listen(3000, () => console.log('Example app listening on port 3000!'))
