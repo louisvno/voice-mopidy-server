@@ -22,3 +22,9 @@ exports.deleteMedia = async(id)=>{
     const mediaList = await this.getMediaList();
     return mediaList;
 }
+
+ exports.getMediaByRownum =async (number) => {
+    const db = await dbPromise;
+    const media = await db.get('select id, resourceId from media limit 1 offset ?', number - 1);
+    return media;
+ }
